@@ -39,12 +39,8 @@ def clean_stock_data(text: str) -> str:
         # 根据涨跌幅类型决定单位：涨幅王用万元，跌幅王用元
         asset_value = float(asset)
         if change_type == "涨幅":
-            # 涨幅王：转换为万元
-            if asset_value >= 10000:
-                asset_value = asset_value / 10000
-                return f"{stock_name}: {change_type}{change_rate}, 月末资产{asset_value:.0f}万元"
-            else:
-                return f"{stock_name}: {change_type}{change_rate}, 月末资产{asset_value}万元"
+            # 涨幅王：原始数据已经是万元单位，直接使用
+            return f"{stock_name}: {change_type}{change_rate}, 月末资产{asset_value:.0f}万元"
         else:
             # 跌幅王：保持元为单位
             return f"{stock_name}: {change_type}{change_rate}, 月末资产{asset_value}元"
@@ -61,13 +57,9 @@ def clean_stock_data(text: str) -> str:
         
         change_type = "涨幅"
         
-        # 第二个模式匹配的都是涨幅王，转换为万元
+        # 第二个模式匹配的都是涨幅王，原始数据已经是万元单位
         asset_value = float(asset)
-        if asset_value >= 10000:
-            asset_value = asset_value / 10000
-            return f"{stock_name}: {change_type}{change_rate}%, 月末资产{asset_value:.0f}万元"
-        else:
-            return f"{stock_name}: {change_type}{change_rate}%, 月末资产{asset_value}万元"
+        return f"{stock_name}: {change_type}{change_rate}%, 月末资产{asset_value}万元"
     
     return text
 
